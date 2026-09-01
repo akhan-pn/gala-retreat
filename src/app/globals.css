@@ -2,19 +2,10 @@
 @import "tw-animate-css";
 
 /* shadcn ships `@custom-variant dark (&:is(.dark *))`. This site has no
-   `.dark` class — it resolves theme from `prefers-color-scheme` plus an
-   explicit `data-theme` on <html>. Rewritten so any shadcn component's
-   `dark:` utilities follow the same rules the semantic tokens do. */
-@custom-variant dark {
-  @media (prefers-color-scheme: dark) {
-    &:where(:root:not([data-theme="light"]), :root:not([data-theme="light"]) *) {
-      @slot;
-    }
-  }
-  &:where(:root[data-theme="dark"], :root[data-theme="dark"] *) {
-    @slot;
-  }
-}
+   `.dark` class — the theme is light unless `data-theme="dark"` is set on
+   <html>. Rewritten so any shadcn component's `dark:` utilities follow the
+   same rule the semantic tokens do. */
+@custom-variant dark (&:where(:root[data-theme="dark"], :root[data-theme="dark"] *));
 
 /* ------------------------------------------------------------------
    Gala Retreat — design tokens
@@ -29,9 +20,10 @@
    2. SEMANTIC tokens — surface / ink / accent. These flip between the
       light and dark themes and are what page chrome should use.
 
-   Theme resolution: the light values below are the base, a
-   prefers-color-scheme query supplies dark, and an explicit
-   `data-theme` on <html> overrides both. See ThemeToggle.
+   Theme resolution: light is the default for everyone, whatever their device
+   is set to — this is a brand decision, not an accessibility one. Dark applies
+   only when the visitor asks for it and `data-theme="dark"` lands on <html>.
+   See ThemeToggle.
    ------------------------------------------------------------------ */
 @theme {
   /* ---- raw palette, theme-independent ---- */
@@ -108,26 +100,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* The dark values are written twice on purpose: once for visitors whose
-   device asks for dark and who have not chosen, and once for an explicit
-   choice. A single selector cannot express both. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --color-surface: #14110d;
-    --color-surface-2: #1b1712;
-    --color-surface-3: #241e17;
-    --color-ink: #ede6da;
-    --color-accent: #c6a15b;
-    --color-on-accent: #14110d;
-    --color-invert-surface: #ede6da;
-    --color-invert-ink: #14110d;
-    --color-invert-accent: #7a2e22;
-    --color-danger: #c97b63;
-    --map-filter: grayscale(0.55) contrast(1.05) brightness(0.78);
-    color-scheme: dark;
-  }
-}
-
+/* Dark applies on explicit request only. */
 :root[data-theme="dark"] {
   --color-surface: #14110d;
   --color-surface-2: #1b1712;
@@ -399,42 +372,6 @@ body {
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
-  }
 }
 
 :root[data-theme="dark"] {

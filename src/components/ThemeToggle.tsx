@@ -10,13 +10,8 @@ const listeners = new Set<() => void>()
 
 function subscribe(onChange: () => void) {
   listeners.add(onChange)
-  const mq = window.matchMedia('(prefers-color-scheme: dark)')
-  // Re-read when the device flips; the snapshot ignores it if the visitor
-  // has already made an explicit choice.
-  mq.addEventListener('change', onChange)
   return () => {
     listeners.delete(onChange)
-    mq.removeEventListener('change', onChange)
   }
 }
 
@@ -25,23 +20,23 @@ function getSnapshot(): Mode {
     const stored = localStorage.getItem(THEME_KEY)
     if (stored === 'light' || stored === 'dark') return stored
   } catch {
-    // Private mode or blocked storage — fall through to the device setting.
+    // Private mode or blocked storage — fall through to the default.
   }
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  // Light is the brand default, regardless of what the device asks for.
+  return 'light'
 }
 
-/** The server cannot know the visitor's theme, so it renders the neutral mark. */
-function getServerSnapshot(): Mode | null {
-  return null
+/** The server renders the default, which is also what an unchosen client gets. */
+function getServerSnapshot(): Mode {
+  return 'light'
 }
 
 /**
  * Light/dark switch.
  *
- * With no stored choice the site follows the device, and keeps following it if
- * the device setting changes mid-session. The first click writes an explicit
- * choice, which then wins for good. The matching no-flash script lives at the
- * top of the layout's <body>.
+ * The site is light by default for everyone. A click writes an explicit choice
+ * to localStorage, which then wins for good; the matching no-flash script at the
+ * top of the layout's <body> applies it before first paint.
  */
 export default function ThemeToggle({ className = '' }: { className?: string }) {
   const mode = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
