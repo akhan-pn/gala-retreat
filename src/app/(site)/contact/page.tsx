@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import ContactForm from '@/components/ContactForm'
 import Reveal from '@/components/Reveal'
 import SmartImage from '@/components/SmartImage'
 import { site, whatsappLink } from '@/config/site'
@@ -159,21 +160,23 @@ export default function Contact() {
               sizes="(max-width: 1024px) 92vw, 32vw"
               className="aspect-[4/3] w-full object-cover"
             />
-          </Reveal>
-          <Reveal delay={140} className="col-span-12 lg:col-span-6 lg:col-start-6">
-            <h2 className="u-display text-[clamp(1.9rem,4.2vw,3.2rem)] text-ink">
+            <h2 className="u-display mt-10 text-[clamp(1.7rem,3.4vw,2.5rem)] text-ink">
               Rather put it in writing?
             </h2>
-            <p className="u-measure-wide mt-6 text-ink/72">
-              The enquiry form takes a minute and gets your date in front of the
-              team with everything they need to answer properly.
+            <p className="u-measure mt-6 text-ink/72">
+              Send a message here and someone will come back to you. If you have
+              a date in mind, the{' '}
+              <a href="/enquiry" className="u-link text-accent">
+                full enquiry form
+              </a>{' '}
+              asks for the few extra details the team needs to check it.
             </p>
-            <a
-              href="/enquiry"
-              className="u-label mt-10 inline-block border border-accent px-9 py-4 text-accent transition-colors duration-500 hover:bg-accent hover:text-on-accent"
-            >
-              Send an enquiry
-            </a>
+          </Reveal>
+
+          {/* The form lives on the page being read rather than behind a link —
+              a click away is where most venue enquiries are lost. */}
+          <Reveal delay={140} className="col-span-12 lg:col-span-7 lg:col-start-6">
+            <ContactForm />
           </Reveal>
         </div>
       </section>

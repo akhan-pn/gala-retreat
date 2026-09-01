@@ -167,7 +167,9 @@ export async function GET(request: Request) {
     const rows: unknown[][] = []
 
     for (const declaration of experiments) {
-      const since = new Date(`${declaration.startedAt}T00:00:00Z`)
+      // IST, matching the dashboard: a date in the declaration is a date at
+      // the venue, not in UTC.
+      const since = new Date(`${declaration.startedAt}T00:00:00+05:30`)
       const daysRunning = Math.max(
         0,
         Math.floor((Date.now() - since.getTime()) / DAY),

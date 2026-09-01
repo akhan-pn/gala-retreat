@@ -112,9 +112,23 @@ export default function Nav() {
             onClick={() => setMenu((m) => !m)}
             aria-expanded={menu}
             aria-controls="mobile-menu"
-            className={`u-label pl-2 ${onHero ? 'text-ivory' : 'text-ink'}`}
+            aria-label={menu ? 'Close menu' : 'Open menu'}
+            className={`grid h-11 w-11 place-items-center ${onHero ? 'text-ivory' : 'text-ink'}`}
           >
-            {menu ? 'Close' : 'Menu'}
+            {/* Two hairlines that cross into an X — thin strokes to match the
+                rest of the chrome, not a chunky three-bar hamburger. */}
+            <span aria-hidden className="relative block h-4 w-6">
+              <span
+                className={`absolute left-0 block h-px w-full bg-current transition-all duration-400 ease-[cubic-bezier(.22,1,.36,1)] ${
+                  menu ? 'top-1/2 rotate-45' : 'top-1'
+                }`}
+              />
+              <span
+                className={`absolute left-0 block h-px w-full bg-current transition-all duration-400 ease-[cubic-bezier(.22,1,.36,1)] ${
+                  menu ? 'top-1/2 -rotate-45' : 'bottom-1'
+                }`}
+              />
+            </span>
           </button>
         </div>
       </div>

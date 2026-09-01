@@ -146,6 +146,14 @@ const GOAL_LABELS: Record<ExperimentGoal, string> = {
   hero_cta_click: 'Pressed the hero button',
 }
 
+/** The same four goals as they read inside a sentence. */
+const GOAL_PHRASES: Record<ExperimentGoal, string> = {
+  enquiry_submitted: 'sending an enquiry',
+  callback_requested: 'asking for a callback',
+  whatsapp_click: 'opening WhatsApp',
+  hero_cta_click: 'pressing the hero button',
+}
+
 /* ------------------------------------------------------------------
    The small amount of statistics an A/B result needs to be honest.
 
@@ -225,7 +233,11 @@ async function readExperiment(
   declaration: ExperimentDeclaration,
   now: number,
 ): Promise<ExperimentReport> {
-  const since = new Date(`${declaration.startedAt}T00:00:00Z`)
+  // The declared start date is a date in the venue's own timezone, and the
+  // rest of this page buckets by IST too. Reading it as UTC midnight would
+  // drop every visitor enrolled in the first five and a half hours of the
+  // day the test went live.
+  const since = new Date(`${declaration.startedAt}T00:00:00+05:30`)
 
   const [perGoal, [discarded]] = await Promise.all([
     Promise.all(
@@ -307,7 +319,7 @@ async function readExperiment(
 function readOut(report: ExperimentReport) {
   const { declaration, arms, daysRunning } = report
   const { minPerArm, minDays } = declaration
-  const primary = GOAL_LABELS[declaration.goals[0]]
+  const primary = GOAL_PHRASES[declaration.goals[0]]
   const smallest = Math.min(...arms.map((arm) => arm.exposed))
   const dayWord = daysRunning === 1 ? 'day' : 'days'
 
@@ -329,7 +341,7 @@ function readOut(report: ExperimentReport) {
     }
     if (daysRunning < minDays) {
       missing.push(
-        `${minDays} days of running (it has been ${daysRunning} ${dayWord})`,
+        `${minDays} days of running (${daysRunning === 0 ? 'it started today' : `it has been ${daysRunning} ${dayWord}`})`,
       )
     }
     return {
@@ -361,7 +373,7 @@ function readOut(report: ExperimentReport) {
     return {
       headline: 'No difference worth acting on.',
       body:
-        `Both wordings are converting at close to the same rate on ${primary.toLowerCase()}. ` +
+        `Both wordings convert at close to the same rate for ${primary}. ` +
         (inHundred === null
           ? ''
           : `A gap this size would turn up by chance in about ${inHundred} of every 100 tests like this one, ` +
@@ -384,11 +396,11 @@ function readOut(report: ExperimentReport) {
     )
     if (guardP !== null && guardP < 0.05) {
       return {
-        headline: `Ahead on clicks, behind on ${GOAL_LABELS[declaration.goals[i]].toLowerCase()} — keep the current wording.`,
+        headline: `Ahead on ${primary}, behind on ${GOAL_PHRASES[declaration.goals[i]]} — keep the current wording.`,
         body:
-          `"${best.note}" wins more presses, but fewer of those people go on to ` +
-          `${GOAL_LABELS[declaration.goals[i]].toLowerCase()}. That is curiosity, not interest. ` +
-          'The test was written to reject this outcome before it was run.',
+          `"${best.note}" wins the press, but fewer of those people end up ` +
+          `${GOAL_PHRASES[declaration.goals[i]]}. That is curiosity, not interest, and ` +
+          'the test was written in advance to reject exactly this outcome.',
       }
     }
   }
@@ -396,7 +408,7 @@ function readOut(report: ExperimentReport) {
   return {
     headline: `"${best.note}" is ahead, and the sample is large enough to say so.`,
     body:
-      `It is converting better than "${control.note}" on ${primary.toLowerCase()}, with no fall in the guardrail. ` +
+      `It converts better than "${control.note}" for ${primary}, with no fall in the guardrail. ` +
       `If the two wordings really performed the same, a gap this size would turn up by chance in about ${inHundred} of every 100 tests like this one — ` +
       'below the 5 in 100 line this test was set to before it started. Safe to make it permanent.',
   }
@@ -965,28 +977,26 @@ export default async function AdminDashboard() {
         return (
           <section key={declaration.key} className="col-span-12 -mt-8">
             <h3 className="u-label mb-2 text-accent">
-              {GOAL_LABELS[declaration.goals[0]]} — {declaration.key.replace(/_/g, ' ')}
+              {arms.map((arm) => `“${arm.note}”`).join(' vs ')}
             </h3>
             <p className="mb-10 text-xs text-ink/60">
-              Started {declaration.startedAt} ·{' '}
-              {report.daysRunning === 0
-                ? 'running since today'
-                : `running ${report.daysRunning} ${report.daysRunning === 1 ? 'day' : 'days'}`}{' '}
-              of the {declaration.minDays} it was set to run
+              Measured on {GOAL_PHRASES[declaration.goals[0]]} · started{' '}
+              {declaration.startedAt} · {report.daysRunning} of the{' '}
+              {declaration.minDays} days it needs to run
             </p>
 
             <div className="grid gap-x-8 gap-y-10 sm:grid-cols-3">
               <Stat
                 value={nf.format(report.totalExposed)}
                 label="Visitors in the test"
-                note={`${nf.format(declaration.minPerArm * arms.length)} needed before it can be called`}
+                note={`${nf.format(declaration.minPerArm)} in each wording needed before it can be called`}
               />
               {arms.map((arm) => (
                 <Stat
                   key={arm.variant}
                   value={nf.format(arm.exposed)}
                   label={`Saw “${arm.note}”`}
-                  note={`${percent(Math.min(arm.exposed, declaration.minPerArm), declaration.minPerArm)} of the ${nf.format(declaration.minPerArm)} this arm needs`}
+                  note={`of the ${nf.format(declaration.minPerArm)} this arm needs`}
                 />
               ))}
             </div>
@@ -1185,7 +1195,7 @@ export default async function AdminDashboard() {
                           {e.email}
                         </a>
                       ) : (
-                        <span className="text-ink/50">—</span>
+                        <span className="text-ink/60">—</span>
                       )}
                     </td>
                     <td className="py-5 pr-6 text-ink/72">{e.eventType ?? '—'}</td>
