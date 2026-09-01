@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Carousel from '@/components/Carousel'
 import FaqAccordion from '@/components/FaqAccordion'
@@ -13,6 +14,9 @@ import { heroSlides } from '@/content/gallery'
 import { packageInclusions, planningSteps } from '@/content/home-sections'
 import { moments, occasions } from '@/content/occasions'
 import { seasonal } from '@/content/seasonal'
+import { graphFor, jsonLdString, pageMetadata } from '@/lib/seo'
+
+export const metadata: Metadata = pageMetadata('/')
 
 /**
  * Titles for the moments rail. Kept here rather than in the content file so the
@@ -383,6 +387,14 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
+
+      {/* Venue, site and package structured data, plus the FAQ answers
+          above. Built in src/lib/seo.ts so it cannot drift from the copy. */}
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: jsonLdString(graphFor('/')) }}
+      />
     </>
   )
 }

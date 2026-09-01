@@ -2,12 +2,9 @@ import type { Metadata } from 'next'
 import Reveal from '@/components/Reveal'
 import SmartImage from '@/components/SmartImage'
 import { site, whatsappLink } from '@/config/site'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Contact',
-  description: `Reach Gala Retreat Resort & Convention at ${site.address.line1}, ${site.address.city}. Call ${site.phone.display} or message us on WhatsApp.`,
-  alternates: { canonical: '/contact' },
-}
+export const metadata: Metadata = pageMetadata('/contact')
 
 const mapEmbed = `https://maps.google.com/maps?q=${encodeURIComponent(
   'Gala Retreat Resort and Convention, Ramdas Pally, Hyderabad',

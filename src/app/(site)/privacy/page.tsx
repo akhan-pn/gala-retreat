@@ -2,12 +2,9 @@ import type { Metadata } from 'next'
 import Reveal from '@/components/Reveal'
 import { ConsentReopenLink } from '@/components/ConsentBanner'
 import { site } from '@/config/site'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Privacy',
-  description: `What Gala Retreat Resort & Convention collects when you use this website, and how to change your mind.`,
-  alternates: { canonical: '/privacy' },
-}
+export const metadata: Metadata = pageMetadata('/privacy')
 
 const sections = [
   {

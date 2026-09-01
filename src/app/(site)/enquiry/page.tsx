@@ -3,13 +3,9 @@ import EnquiryForm from '@/components/EnquiryForm'
 import Reveal from '@/components/Reveal'
 import SmartImage from '@/components/SmartImage'
 import { site } from '@/config/site'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Enquiry',
-  description:
-    'Check a date at Gala Retreat Resort & Convention, Hyderabad. Tell us your occasion, date and guest count and we will come back with availability.',
-  alternates: { canonical: '/enquiry' },
-}
+export const metadata: Metadata = pageMetadata('/enquiry')
 
 export default function Enquiry() {
   return (

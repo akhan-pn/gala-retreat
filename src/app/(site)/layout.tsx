@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Jost, Prata } from 'next/font/google'
+import BehaviourTracker from '@/components/BehaviourTracker'
 import ConsentBanner from '@/components/ConsentBanner'
 import Footer from '@/components/Footer'
 import Nav from '@/components/Nav'
@@ -132,6 +133,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ConsentBanner />
         <VisitorCapture />
         <PageViewTracker />
+        <BehaviourTracker />
 
         <script
           type="application/ld+json"

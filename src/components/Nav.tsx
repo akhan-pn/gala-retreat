@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import BrandMark from './BrandMark'
 import { site } from '@/config/site'
 import ThemeToggle from './ThemeToggle'
 
@@ -63,14 +64,17 @@ export default function Nav() {
       <div className="u-grid items-center py-5 sm:py-6">
         <Link
           href="/"
-          className="col-span-8 leading-none sm:col-span-4"
+          className="col-span-8 flex items-center gap-3.5 leading-none sm:col-span-4"
           aria-label={`${site.legalName} — home`}
         >
-          <span className={`u-display-sm block text-[1.35rem] sm:text-[1.5rem] ${brand}`}>
-            Gala Retreat
-          </span>
-          <span className={`u-label mt-1.5 block text-[0.5625rem] ${brandSub}`}>
-            Resort &amp; Convention
+          <BrandMark size={34} className={`shrink-0 ${brand}`} />
+          <span>
+            <span className={`u-display-sm block text-[1.35rem] sm:text-[1.5rem] ${brand}`}>
+              Gala Retreat
+            </span>
+            <span className={`u-label mt-1.5 block text-[0.5625rem] ${brandSub}`}>
+              Resort &amp; Convention
+            </span>
           </span>
         </Link>
 

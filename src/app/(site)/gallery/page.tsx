@@ -2,13 +2,9 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import GalleryBrowser from '@/components/GalleryBrowser'
 import Reveal from '@/components/Reveal'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Gallery',
-  description:
-    'Photographs of the convention hall, open lawn, farm stay and past events at Gala Retreat Resort & Convention, Hyderabad.',
-  alternates: { canonical: '/gallery' },
-}
+export const metadata: Metadata = pageMetadata('/gallery')
 
 export default function Gallery() {
   return (

@@ -4,13 +4,9 @@ import Parallax from '@/components/Parallax'
 import Reveal from '@/components/Reveal'
 import SmartImage from '@/components/SmartImage'
 import { site } from '@/config/site'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'About',
-  description:
-    'Gala Retreat is a convention hall, open lawn and private farm stay on the quiet side of Hyderabad — one team, one address, up to 600 guests.',
-  alternates: { canonical: '/about' },
-}
+export const metadata: Metadata = pageMetadata('/about')
 
 const principles = [
   {
