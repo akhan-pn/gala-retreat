@@ -1,0 +1,314 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Gala Retreat — design tokens
+
+   Two layers:
+
+   1. RAW palette — fixed hues sampled from the venue's own evening
+      photography. These never change between themes, and are used where
+      the context is fixed regardless of theme: type set over a photograph,
+      the lightbox, the footer, the statistics band.
+
+   2. SEMANTIC tokens — surface / ink / accent. These flip between the
+      light and dark themes and are what page chrome should use.
+
+   Theme resolution: the light values below are the base, a
+   prefers-color-scheme query supplies dark, and an explicit
+   `data-theme` on <html> overrides both. See ThemeToggle.
+   ------------------------------------------------------------------ */
+@theme {
+  /* ---- raw palette, theme-independent ---- */
+  --color-nightfall: #14110d;
+  --color-nightfall-2: #1b1712;
+  --color-nightfall-3: #241e17;
+  --color-lawn: #1e2b22;
+  --color-lawn-2: #16211a;
+  --color-champagne: #c6a15b;
+  --color-champagne-2: #dcc08a;
+  --color-ivory: #ede6da;
+  --color-ivory-2: #e0d6c5;
+  --color-kumkum: #7a2e22;
+  --color-sage: #6e7a6a;
+
+  /* ---- semantic, light theme is the base ---- */
+  --color-surface: #f5f1e8;
+  --color-surface-2: #ebe4d6;
+  --color-surface-3: #e0d7c5;
+  --color-ink: #1a150f;
+  --color-accent: #7e602e;
+  --color-on-accent: #f5f1e8;
+  /* The inverse band is "the opposite of the page". On light it is the deep
+     lawn green rather than plain black, so it stays distinct from the
+     full-bleed photo plates it sits next to, and echoes the footer. */
+  --color-invert-surface: #16211a;
+  --color-invert-ink: #ede6da;
+  --color-invert-accent: #c6a15b;
+  --color-danger: #8c3a24;
+
+  /* Google's map tiles are brightly coloured; mute them into whichever
+     theme is active rather than always darkening them. */
+  --map-filter: grayscale(0.4) contrast(1.02) brightness(1.02);
+
+  --font-display: var(--font-prata), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  color-scheme: light;
+}
+
+/* The dark values are written twice on purpose: once for visitors whose
+   device asks for dark and who have not chosen, and once for an explicit
+   choice. A single selector cannot express both. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-surface: #14110d;
+    --color-surface-2: #1b1712;
+    --color-surface-3: #241e17;
+    --color-ink: #ede6da;
+    --color-accent: #c6a15b;
+    --color-on-accent: #14110d;
+    --color-invert-surface: #ede6da;
+    --color-invert-ink: #14110d;
+    --color-invert-accent: #7a2e22;
+    --color-danger: #c97b63;
+    --map-filter: grayscale(0.55) contrast(1.05) brightness(0.78);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-surface: #14110d;
+  --color-surface-2: #1b1712;
+  --color-surface-3: #241e17;
+  --color-ink: #ede6da;
+  --color-accent: #c6a15b;
+  --color-on-accent: #14110d;
+  --color-invert-surface: #ede6da;
+  --color-invert-ink: #14110d;
+  --color-invert-accent: #7a2e22;
+  --color-danger: #c97b63;
+  --map-filter: grayscale(0.55) contrast(1.05) brightness(0.78);
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* ------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------ */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  transition:
+    background-color 400ms var(--ease-editorial),
+    color 400ms var(--ease-editorial);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* Prata carries the brand: a single-weight Didone with vertical stress and
+   generous thick/thin contrast. Because it has no bold, hierarchy is made
+   with size and space rather than weight — which suits the layout. */
+.u-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.015em;
+}
+
+.u-display-sm {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: -0.008em;
+}
+
+/* The third type register — the editorial rigour that stops this reading
+   as a template. Jost's geometric caps take wide tracking well. */
+.u-label {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* Oversized section numerals, hung in the margin, off-grid. */
+.u-numeral {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+}
+
+.u-rule {
+  height: 1px;
+  background: currentColor;
+  opacity: 0.22;
+}
+
+/* ------------------------------------------------------------------
+   Editorial grid — 12 columns, text lives off-centre by design
+   ------------------------------------------------------------------ */
+.u-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(1rem, 2.2vw, 2rem);
+  padding-inline: clamp(1.25rem, 5vw, 6rem);
+  max-width: 108rem;
+  margin-inline: auto;
+}
+
+.u-measure {
+  max-width: 34ch;
+}
+
+.u-measure-wide {
+  max-width: 52ch;
+}
+
+/* ------------------------------------------------------------------
+   Motion — slow, restrained.
+
+   Anything that starts at opacity:0 is neutralised by a <noscript> style
+   block in the layout, so a visitor without JavaScript gets the content
+   rather than a blank page.
+   ------------------------------------------------------------------ */
+.u-reveal {
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
+  transition:
+    opacity 700ms var(--ease-editorial),
+    transform 700ms var(--ease-editorial);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.u-reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hero slideshow: slow cross-fade with a barely-there Ken Burns drift. */
+@keyframes u-drift {
+  from {
+    transform: scale(1.06) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.13) translate3d(-1.2%, -0.8%, 0);
+  }
+}
+
+.u-slide {
+  opacity: 0;
+  transition: opacity 1200ms var(--ease-editorial);
+}
+
+.u-slide[data-active="true"] {
+  opacity: 1;
+}
+
+.u-slide[data-active="true"] img {
+  animation: u-drift 9000ms linear forwards;
+}
+
+/* Underline that draws in from the left rather than fading.
+   Deliberately does not set `display` — callers pair this with `block`,
+   `inline-block` or nothing, and the underline works either way. */
+.u-link {
+  position: relative;
+}
+
+.u-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.18em;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 420ms var(--ease-editorial);
+}
+
+.u-link:hover::after,
+.u-link[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+/* Images fade up out of the surface colour instead of popping in. */
+.u-img {
+  background: var(--color-surface-2);
+}
+
+.u-img img {
+  opacity: 0;
+  transition: opacity 900ms var(--ease-editorial);
+}
+
+.u-img img[data-loaded="true"] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  body {
+    transition: none;
+  }
+  .u-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .u-slide {
+    transition: opacity 200ms linear;
+  }
+  .u-slide[data-active="true"] img {
+    animation: none;
+    transform: scale(1.06);
+  }
+  .u-img img {
+    opacity: 1;
+    transition: none;
+  }
+  .u-link::after {
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
