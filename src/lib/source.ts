@@ -41,3 +41,29 @@ export const SOURCE_LABELS: Record<string, string> = {
   youtube: 'YouTube',
   listings: 'Wedding listings',
 }
+
+/** Long enough for any origin plus a real path, which is all we keep. */
+const MAX_REFERRER_LENGTH = 500
+
+/**
+ * Reduces a referrer to origin and path before it is stored.
+ *
+ * Same reasoning as parsePath in lib/behaviour: a query string or fragment
+ * carries search terms, campaign identifiers and — on a same-site hop —
+ * whatever was in the previous page's URL, none of which we asked for.
+ */
+export function sanitiseReferrer(referrer: string | null | undefined): string | null {
+  if (!referrer) return null
+
+  let url: URL
+  try {
+    url = new URL(referrer)
+  } catch {
+    // Not a URL, so nothing in it can be shown to be free of typed text.
+    return null
+  }
+
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') return null
+  // url.origin also drops any credentials the referring URL carried.
+  return `${url.origin}${url.pathname}`.slice(0, MAX_REFERRER_LENGTH)
+}

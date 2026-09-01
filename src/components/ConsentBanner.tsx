@@ -55,13 +55,17 @@ export default function ConsentBanner() {
       <p className="u-label text-accent">Before you look around</p>
 
       <p className="mt-4 text-[0.95rem] leading-relaxed text-ink/72">
-        We would like to count visits to this site so we know which pages are
-        useful and how people found us. That needs one small cookie holding a
-        random number — no name, no email, nothing shared with anyone else.
+        We would like to measure how this site is used, so we know which pages
+        are useful and how people found us. That needs two small cookies
+        holding a random number, plus a record of the pages you open, how far
+        you read, which buttons and links you press, and the city your
+        connection is in — no name, no email, nothing shared with anyone else.
       </p>
 
       <p className="mt-3 text-[0.95rem] leading-relaxed text-ink/72">
-        Say no and the site works exactly the same; we simply will not count you.
+        It also lets us show you one of two wordings of a page and see which
+        works better. Say no and the site works exactly the same; we simply
+        record nothing.
       </p>
 
       <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">

@@ -1,5 +1,6 @@
 import { cookies, headers } from 'next/headers'
 import { NextResponse } from 'next/server'
+import { parsePath } from '@/lib/behaviour'
 import { CONSENT_COOKIE, consentGrantedFromCookie } from '@/lib/consent'
 import { getDb, schema } from '@/lib/db'
 import { EXPERIMENT_GOALS, type ExperimentGoal } from '@/lib/db/schema'
@@ -61,10 +62,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false }, { status: 400 })
   }
 
-  const path =
-    typeof payload.path === 'string' ? payload.path.slice(0, 200) : '/'
+  // Same door as /api/events: the query string and fragment are cut before the
+  // value is looked at, so nothing a visitor typed can reach the path column.
+  // A path that fails validation is stored as null rather than costing the
+  // visitor their exposure or their conversion.
+  const path = parsePath(payload.path)
   // The admin area is not part of anybody's experiment.
-  if (path.startsWith('/admin')) return NextResponse.json({ ok: true })
+  if (path?.startsWith('/admin')) return NextResponse.json({ ok: true })
 
   const jar = await cookies()
 

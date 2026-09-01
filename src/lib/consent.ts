@@ -11,8 +11,13 @@ export type Consent = 'granted' | 'denied'
 
 export const CONSENT_COOKIE = 'gr_consent'
 export const CONSENT_KEY = 'gr-consent'
-/** Bump when the wording materially changes, to re-ask. */
-export const CONSENT_VERSION = '1'
+/**
+ * Bump when the wording materially changes, to re-ask.
+ * 2: the banner and privacy notice now disclose engagement, event and
+ * experiment collection, so a `granted:1` answer no longer covers what is
+ * recorded and has to be asked again.
+ */
+export const CONSENT_VERSION = '2'
 
 export const CONSENT_TEXT =
   'I agree to Gala Retreat holding these details in order to respond to this enquiry.'

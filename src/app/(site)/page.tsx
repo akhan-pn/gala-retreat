@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Carousel from '@/components/Carousel'
+import Experiment from '@/components/Experiment'
 import FaqAccordion from '@/components/FaqAccordion'
 import MomentsCarousel from '@/components/fx/MomentsCarousel'
 import Parallax from '@/components/Parallax'
@@ -74,7 +75,13 @@ export default function Home() {
                       href="/enquiry"
                       className="u-label mt-10 inline-flex items-center gap-3 border border-champagne px-8 py-4 text-champagne transition-colors duration-500 hover:bg-champagne hover:text-nightfall"
                     >
-                      Enquire
+                      <Experiment
+                        name="hero_cta"
+                        variants={{
+                          control: 'Enquire',
+                          check_date: 'Check your date',
+                        }}
+                      />
                       <span aria-hidden>→</span>
                     </Link>
                   </div>

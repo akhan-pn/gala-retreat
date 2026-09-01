@@ -1,0 +1,1 @@
+ALTER TABLE "visitors" DROP COLUMN "visitor_id";

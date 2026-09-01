@@ -89,8 +89,12 @@ export const visitors = pgTable(
     device: varchar('device', { length: 20 }),
     city: varchar('city', { length: 80 }),
     country: varchar('country', { length: 2 }),
-    /** Links the details to the anonymous visit log, when both were consented. */
-    visitorId: varchar('visitor_id', { length: 64 }),
+    /**
+     * There is deliberately no visitorId. Holding gr_vid on a row that also
+     * holds a name and a phone number would contradict the banner and the
+     * privacy page, and would turn one join into a named person's pageviews,
+     * scroll depth, click events and experiment arm.
+     */
     contactConsent: boolean('contact_consent').notNull().default(false),
     consentAt: timestamp('consent_at', { withTimezone: true }),
     consentText: text('consent_text'),

@@ -204,7 +204,7 @@ function clampInt(value: unknown, min: number, max: number, fallback: number) {
   return Math.min(max, Math.max(min, Math.trunc(value)))
 }
 
-function parsePath(value: unknown): string | null {
+export function parsePath(value: unknown): string | null {
   if (typeof value !== 'string') return null
   // Query strings and fragments can carry anything a visitor typed, so they are
   // cut before the value is ever looked at, let alone stored.

@@ -382,6 +382,19 @@ function readOut(report: ExperimentReport) {
     }
   }
 
+  // chanceOfGap is two-sided: a small p says the two arms differ, not which
+  // way round. Without this, an arm that loses significantly reads as a win.
+  if (rate(best) <= rate(control)) {
+    return {
+      headline: 'The wording already live is ahead — do not switch.',
+      body:
+        `"${best.note}" converts worse than "${control.note}" for ${primary}, and the sample is ` +
+        `large enough to say so: a gap this size would turn up by chance in about ${inHundred} of every 100 tests like this one, ` +
+        'below the 5 in 100 line this test was set to before it started. ' +
+        `Keep "${control.note}" and retire the alternative.`,
+    }
+  }
+
   // A win on the primary metric that costs the guardrail is not a win. The
   // declaration lists guardrails after the primary goal for exactly this.
   for (let i = 1; i < declaration.goals.length; i += 1) {
@@ -417,10 +430,17 @@ function readOut(report: ExperimentReport) {
 /** Time windows for the dashboard, read once per request. */
 async function currentWindows() {
   const now = Date.now()
+  // The 14-day chart buckets by IST calendar day, so its lower bound has to be
+  // an IST midnight. A plain now - 13 * DAY leaves the oldest bar holding only
+  // the slice of its day that falls after the current time of day, so it reads
+  // short next to thirteen full ones. IST never shifts, so +05:30 is fixed.
+  const oldestDay = new Date(now - 13 * DAY).toLocaleDateString('en-CA', {
+    timeZone: IST,
+  })
   return {
     now,
     since30: new Date(now - 30 * DAY),
-    since14: new Date(now - 13 * DAY),
+    since14: new Date(`${oldestDay}T00:00:00+05:30`),
   }
 }
 

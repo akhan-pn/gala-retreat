@@ -8,6 +8,7 @@ import PageViewTracker from '@/components/PageViewTracker'
 import VisitorCapture from '@/components/VisitorCapture'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
 import { site } from '@/config/site'
+import { EXPERIMENT_BOOT_SCRIPT } from '@/lib/experiments'
 import '../globals.css'
 
 const prata = Prata({
@@ -113,6 +114,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "try{var t=localStorage.getItem('gr-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}",
           }}
         />
+        {/* Stamps the assigned arm on <html> before the parser reaches the
+            hero, so the first paint already shows it and no variant can
+            flicker. Must stay blocking and in this slot. */}
+        <script dangerouslySetInnerHTML={{ __html: EXPERIMENT_BOOT_SCRIPT }} />
         {/* Without JavaScript nothing can reveal itself, so neutralise every
             opacity:0 starting state rather than serve a blank page. */}
         <noscript>

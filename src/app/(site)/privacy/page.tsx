@@ -18,18 +18,30 @@ const sections = [
   },
   {
     n: '02',
-    title: 'If you allow us to count visits',
+    title: 'If you allow us to measure visits',
     body: [
-      'Only if you press Allow: we store one cookie containing a random number, and record which pages you open, roughly what kind of device you are on, and which site you arrived from.',
+      'Only if you press Allow: we store two cookies. One holds a random number that stands in for you; the other holds a scrambled copy of that number, which decides the page versions described in 03.',
+      'For each page you open we record the page address, roughly what kind of device you are on, which site you arrived from, and the city and country your connection appears to be in. We never store your IP address.',
+      'While you are on a page we also record how far down you scrolled, how long the page was open and actually in front of you, and how often you clicked the same spot in frustration.',
+      'And we record a short, fixed list of actions: which buttons you pressed, which WhatsApp, phone or map links you followed, and which sections came into view. Only actions from that list are recorded — never anything you type.',
       'The random number lets us tell one visit from ten visits. It is not linked to your name, your enquiry, or anything else. We do not know who you are.',
       'There is no Google Analytics here, no advertising pixel and no third-party script. The figures are only visible to the Gala Retreat team.',
     ],
   },
   {
     n: '03',
+    title: 'If we are trying two versions of a page',
+    body: [
+      'We sometimes write a heading or a button two ways and see which one people find more useful. The scrambled number decides which version you are shown, so it stays the same every time you come back.',
+      'Only if you press Allow: we record which version you were shown, and whether you went on to send an enquiry, ask for a callback, or open WhatsApp. Nothing about the version you saw is kept with anything you typed.',
+      'Without permission you are never entered into one of these at all — you see the standard version, and nothing is recorded.',
+    ],
+  },
+  {
+    n: '04',
     title: 'Changing your mind',
     body: [
-      'You can withdraw at any time, and the identifier is deleted from your browser when you do.',
+      'You can withdraw at any time, and both cookies are deleted from your browser when you do.',
       'To have an enquiry deleted, or to ask what we hold, call or email us using the details on the contact page and we will action it.',
     ],
   },
@@ -48,8 +60,9 @@ export default function Privacy() {
           </Reveal>
           <Reveal delay={140} className="col-span-12 lg:col-span-3 lg:col-start-10 lg:pt-16">
             <p className="text-ink/72">
-              Short version: your enquiry, and — only with your permission — a
-              count of visits. Nothing else, and nothing shared.
+              Short version: your enquiry, and — only with your permission — an
+              anonymous record of how the site is used. Nothing else, and
+              nothing shared.
             </p>
           </Reveal>
         </div>

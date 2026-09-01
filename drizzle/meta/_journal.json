@@ -29,6 +29,13 @@
       "when": 1788290175750,
       "tag": "0003_groovy_hex",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1788293568373,
+      "tag": "0004_mean_doctor_spectrum",
+      "breakpoints": true
     }
   ]
 }

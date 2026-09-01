@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 import { CONSENT_COOKIE, consentGrantedFromCookie } from '@/lib/consent'
 import { getDb, schema } from '@/lib/db'
 import { resolveGeo } from '@/lib/geo'
-import { resolveDevice, resolveSource } from '@/lib/source'
+import { resolveDevice, resolveSource, sanitiseReferrer } from '@/lib/source'
 
 const VISITOR_COOKIE = 'gr_vid'
 const ONE_YEAR = 60 * 60 * 24 * 365
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
       path,
       visitorId,
       source: resolveSource(payload.referrer ?? null, payload.utm ?? null),
-      referrer: payload.referrer?.slice(0, 500) ?? null,
+      referrer: sanitiseReferrer(payload.referrer),
       device: resolveDevice(ua),
       city: geo.city,
       country: geo.country,

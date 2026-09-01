@@ -2,7 +2,7 @@ import { cookies, headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { CONSENT_TEXT } from '@/lib/consent'
 import { getDb, schema } from '@/lib/db'
-import { resolveSource } from '@/lib/source'
+import { resolveSource, sanitiseReferrer } from '@/lib/source'
 
 export type EnquiryErrors = Partial<
   Record<
@@ -108,7 +108,7 @@ export async function POST(request: Request) {
       consentText: CONSENT_TEXT,
       // Prefer the source recorded on the visitor's first pageview.
       source: resolveSource(jar.get('gr_first_ref')?.value ?? referrer),
-      referrer: referrer?.slice(0, 500) ?? null,
+      referrer: sanitiseReferrer(referrer),
     })
   } catch (error) {
     console.error('[enquiry] insert failed', error)

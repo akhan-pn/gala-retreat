@@ -22,9 +22,18 @@ export async function POST(request: Request) {
   const response = NextResponse.json({ ok: true, value })
 
   if (value === 'denied') {
-    // Drop the identifier we previously issued.
+    // Drop every identifier we previously issued. gr_bkt is an HMAC of gr_vid,
+    // so leaving it behind would keep a stable id in the browser — readable by
+    // page scripts and sent on every request — after the visitor withdrew.
     response.cookies.set('gr_vid', '', {
       httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: 0,
+    })
+    response.cookies.set('gr_bkt', '', {
+      httpOnly: false,
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       path: '/',

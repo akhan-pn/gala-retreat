@@ -1,38 +1,43 @@
 # Gala Retreat — logo
 
-**The Marigold.** Eight discs on a ring, unioned with a centre disc, with the
-eye punched out.
+**The Threshold.** An ogee arch standing on a plinth.
 
-The genda marigold is the flower every Indian wedding is strung with — the
-garland at the gate, the mandap, the car, the threshold. It is the one object
-that is present at literally every function this venue hosts, from a haldi to a
-corporate inauguration.
+The arch is the gateway form of Golconda and the Qutb Shahi tombs — local to
+Hyderabad rather than to hospitality in general — and it is the shape of the
+sandstone entrance in the venue's own photography. Every celebration held here
+begins by walking through a dressed threshold. The plinth is the ground:
+eleven acres of it.
 
-**It is built, not drawn.** Eight circles on an exact ring, unioned with a core
-disc, with a reverse-wound circle punching the eye. That construction is what
-keeps a flower out of clipart territory: the geometry is precise and repeatable,
-so it reads as a made mark rather than an illustration. It also means the whole
-form is described by four numbers — petal radius, ring radius, core radius, eye
-radius — which is what makes the optical small cut possible.
+**The mark is drawn, not stroked.** The wall is heavy at the shoulders and thins
+into the ogee tip, so it carries the same stress axis as the Didone wordmark
+beside it. This matters more than any other decision here: a uniform-weight
+outline — every stroke the same width — is the single thing that makes a mark
+read as clipart rather than as an identity, however good the underlying idea.
 
-Winding is load-bearing. The petals and core wind one way so the default
-non-zero fill rule unions them; the eye winds the other way, which punches the
-hole. Even-odd would cancel every overlap and produce a rosette of slivers.
+The form was arrived at by drawing and rejecting: six arch constructions tested
+at four sizes, then six weight treatments, then four base treatments. The
+cusped and multifoil arches are more decoratively Deccan but develop a notch at
+40px; the flared-foot and stepped-plinth bases are fussy below 30px; a flush
+plinth merges into the legs and the counter starts to read as a keyhole. What
+survived is a slightly overhanging plinth, which reads as a footing.
 
-Two optical cuts. Below 26px the eye is opened and the ring pulled in slightly,
-the way a type family's caption cut is adjusted — at 16px the primary cut's eye
-closes to under two pixels and fills in.
+There are two optical cuts. Below 26px the counter is opened up and the walls
+pulled in, the way a type family's caption cut is adjusted — closing the counter
+entirely would leave a solid blob with no arch left in it.
 
-### What was rejected, and why
 
-Seven other territories were drawn and discarded, all committed under
-`docs/brand/`: a Qutb Shahi khatim star (strong, and it offered a pattern
-system, but colder and less obviously a wedding venue), a pierced jaali screen
-(the most Deccan of the set, but mush below 24px), a diya (instantly understood
-and the most common mark in the category), a shamiana canopy (read as a
-mushroom), a toran garland (read as a comb), a GR monogram (says "an estate",
-not this one), and an ogee threshold arch (well drawn in the end, but a doorway
-is a doorway).
+### Territories explored and set aside
+
+A second round started from scratch and drew seven other routes, all recorded
+under `docs/brand/`: a Qutb Shahi khatim star (strong, and it offered a whole
+pattern system, but colder and less obviously a wedding venue), a pierced jaali
+screen (the most Deccan of the set, but mush below 24px), a marigold rosette
+(warmest and most legible small — carried furthest, and still the best
+alternative if this ever needs revisiting), a diya, a shamiana canopy, a toran
+garland, and a GR monogram.
+
+The arch was kept. It is the only one of the eight that says something specific
+about this property rather than about Indian weddings in general.
 
 ---
 
@@ -47,7 +52,7 @@ is a doorway).
 | `mark.svg` | Icon only, two-colour, transparent. |
 | `mark-light.svg` | Icon only, reversed. |
 | `mark-on-nightfall.svg` | Icon on a solid `#14110D` tile — social avatar. |
-| `mark-small.svg` · `-light` · `-on-nightfall` | **24px and below.** The optical small cut, opened eye. |
+| `mark-small.svg` · `-light` · `-on-nightfall` | **24px and below.** The optical small cut, opened counter. |
 | `logo-mono-black.svg` / `-white.svg` | Single-colour lockups for photography, embossing, fax-grade print. |
 | `mark-mono-black.svg` / `-white.svg` | Single-colour icon. |
 
@@ -62,17 +67,17 @@ dependency. The files render identically on a machine with no fonts installed.
 |---|---|---|
 | Horizontal lockup | **120px wide** / 32mm print | Below this "RESORT & CONVENTION" fills in. |
 | Stacked lockup | **90px wide** / 24mm print | Same limit, subline first to fail. |
-| Mark, primary cut | **26px** | Below this the eye closes up. |
+| Mark, primary cut | **26px** | Below this the counter starts to fill in. |
 | Mark, small cut | **16px** | Hard floor. Do not go smaller — use the wordmark instead. |
 
-**Use `mark-small.svg` at 24px and below.** The eye is the first thing to close
-on a pixel grid, and a rosette with a filled-in centre is just a blob.
+**Use `mark-small.svg` at 24px and below.** The counter is the first thing to
+close up on a pixel grid, and an arch with a filled-in opening is just a blob.
 
 ## Clear space
 
-Keep clear space equal to **the radius of one petal** on all four sides — about
-one seventh of the mark's width. Nothing sits inside that: no rule, no photo
-edge, no other logo, no caption.
+Keep clear space equal to **the width of the arch opening** on all four sides —
+about one third of the mark's height. Nothing sits inside that: no rule, no
+photo edge, no other logo, no caption.
 
 On photography, the clear space is also a legibility requirement. Place the
 lockup over an area of even tone; if the image is busy, put it on a solid panel
@@ -103,8 +108,7 @@ file rather than recolouring.
 - Don't retype the wordmark. It is outlined and letter-spaced specifically; set
   type will not match.
 - Don't recolour, add a gradient, add a shadow, or outline it.
-- Don't redraw it as an outline, add a stem, or add leaves. It is a geometric rosette, not a botanical illustration.
-- Don't change the petal count. Eight is the construction.
+- Don't redraw it as a stroked outline. The modulated weight is the design.
 - Don't stretch, rotate, or skew. Scale proportionally only.
 - Don't put the two-colour mark on a busy photograph — use mono white.
 - Don't rebuild the arch. The proportion is the identity; a wider or shorter

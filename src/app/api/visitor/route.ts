@@ -4,7 +4,7 @@ import { VISITOR_CONSENT_TEXT } from '@/components/VisitorCapture'
 import { CONSENT_COOKIE, consentGrantedFromCookie } from '@/lib/consent'
 import { getDb, schema } from '@/lib/db'
 import { resolveGeo } from '@/lib/geo'
-import { resolveDevice, resolveSource } from '@/lib/source'
+import { resolveDevice, resolveSource, sanitiseReferrer } from '@/lib/source'
 
 export type VisitorErrors = Partial<
   Record<'name' | 'phone' | 'consent' | 'form', string>
@@ -56,23 +56,28 @@ export async function POST(request: Request) {
   const head = await headers()
   const jar = await cookies()
   const referrer = head.get('referer')
-  const geo = resolveGeo(head)
+
+  // The tick box only agrees to being called back. Where the visitor came
+  // from, what they browsed on and where they are is analytics, and the
+  // banner asked about that separately — so a visitor who said "No thanks"
+  // leaves us a name and a number and nothing else.
+  const analytics = consentGrantedFromCookie(jar.get(CONSENT_COOKIE)?.value)
+  const geo = analytics ? resolveGeo(head) : { city: null, country: null }
 
   try {
     await db.insert(schema.visitors).values({
       name,
       phone,
       capturedOn,
-      source: resolveSource(referrer),
-      referrer: referrer?.slice(0, 500) ?? null,
-      device: resolveDevice(head.get('user-agent')),
+      source: analytics ? resolveSource(referrer) : null,
+      referrer: analytics ? sanitiseReferrer(referrer) : null,
+      device: analytics ? resolveDevice(head.get('user-agent')) : null,
       city: geo.city,
       country: geo.country,
-      // Only tie these details to the anonymous visit log if that log was
-      // itself consented to; otherwise the two stay unlinked.
-      visitorId: consentGrantedFromCookie(jar.get(CONSENT_COOKIE)?.value)
-        ? (jar.get('gr_vid')?.value ?? null)
-        : null,
+      // gr_vid is deliberately never written here. The banner and the privacy
+      // page both promise the measurement id identifies nobody, and a name and
+      // a phone number sitting on the same row as it would make that untrue —
+      // one join would hand over a named person's whole behaviour trail.
       contactConsent: true,
       consentAt: new Date(),
       consentText: VISITOR_CONSENT_TEXT,
