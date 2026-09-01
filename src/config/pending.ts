@@ -13,19 +13,23 @@ export const pending: { key: string; current: string; needed: string }[] = [
   },
   {
     key: 'geography',
-    current: 'Copy claimed the venue is on the WESTERN side of Hyderabad, near Gachibowli',
+    current:
+      'Corrected: the copy now places the venue SOUTH-EAST of Hyderabad, off the ' +
+      'Nagarjuna Sagar road past Ramoji Film City, nearest LB Nagar and Dilsukhnagar.',
     needed:
-      'WRONG, and corrected. Ramdas Pally at 501510 is in Ibrahimpatnam mandal — ' +
-      'SOUTH-EAST Hyderabad, near Ramoji Film City and Hayathnagar. Gachibowli and the ' +
-      'Financial District are 45-60km away across the whole city. Confirm the exact ' +
-      'address and get a real measured drive time from the client before restating any.',
+      'Confirm the exact address and which ORR exit guests should use. The earlier ' +
+      'copy wrongly claimed the western side near Gachibowli, which is 45-60km away ' +
+      'across the whole city; the correction is built from pincode research, not from ' +
+      'the client, so it still needs their sign-off.',
   },
   {
-    key: 'about.h1',
-    current: '"Eleven acres, forty minutes from the noise."',
+    key: 'drive-time',
+    current: 'No drive time is quoted anywhere. The about H1 no longer claims forty minutes.',
     needed:
-      'The forty-minute figure was never measured. Confirm a real drive time, from a ' +
-      'named starting point, or drop the number.',
+      'Measure the real drive from two named origins — LB Nagar and Dilsukhnagar are ' +
+      'the honest ones — and put a real number on the page. Distance is this venue\u2019s ' +
+      'primary objection, and a measured figure is worth more than the hedge standing ' +
+      'in for it.',
   },
   {
     key: 'site.email',

@@ -39,7 +39,7 @@ export default function About() {
           <Reveal className="col-span-12 lg:col-span-7 lg:col-start-2">
             <p className="u-label text-accent">About the venue</p>
             <h1 className="u-display mt-8 text-[clamp(2.5rem,7vw,5.5rem)] text-ink">
-              Eleven acres, forty minutes from the noise.
+              Eleven acres, well past the noise.
             </h1>
           </Reveal>
 

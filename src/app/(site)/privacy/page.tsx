@@ -23,7 +23,7 @@ const sections = [
       'Only if you press Allow: we store two cookies. One holds a random number that stands in for you; the other holds a scrambled copy of that number, which decides the page versions described in 03.',
       'For each page you open we record the page address, roughly what kind of device you are on, which site you arrived from, and the city and country your connection appears to be in. We never store your IP address.',
       'While you are on a page we also record how far down you scrolled, how long the page was open and actually in front of you, and how often you clicked the same spot in frustration.',
-      'And we record a short, fixed list of actions: which buttons you pressed, which WhatsApp, phone or map links you followed, and which sections came into view. Only actions from that list are recorded — never anything you type.',
+      'And we record a short, fixed list of actions: which buttons you pressed, which WhatsApp, phone, map, email or social links you followed, and which sections came into view. Only actions from that list are recorded — never anything you type.',
       'The random number lets us tell one visit from ten visits. It is not linked to your name, your enquiry, or anything else. We do not know who you are.',
       'There is no Google Analytics here, no advertising pixel and no third-party script. The figures are only visible to the Gala Retreat team.',
     ],
@@ -33,7 +33,7 @@ const sections = [
     title: 'If we are trying two versions of a page',
     body: [
       'We sometimes write a heading or a button two ways and see which one people find more useful. The scrambled number decides which version you are shown, so it stays the same every time you come back.',
-      'Only if you press Allow: we record which version you were shown, and whether you went on to send an enquiry, ask for a callback, or open WhatsApp. Nothing about the version you saw is kept with anything you typed.',
+      'Only if you press Allow: we record which version you were shown, and whether you went on to press the main enquiry button, open WhatsApp, ask for a callback or send an enquiry. Nothing about the version you saw is kept with anything you typed.',
       'Without permission you are never entered into one of these at all — you see the standard version, and nothing is recorded.',
     ],
   },
