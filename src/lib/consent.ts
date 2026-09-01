@@ -51,9 +51,18 @@ export function writeConsent(value: Consent) {
     localStorage.setItem(CONSENT_KEY, encoded)
   } catch {}
 
-  // Withdrawing must also drop the identifier already issued.
+  // Withdrawing must also drop the identifier already issued. That cookie is
+  // httpOnly, so only the server can clear it.
   if (value === 'denied') {
-    document.cookie = `gr_vid=; Max-Age=0; Path=/; SameSite=Lax${secure}`
+    void fetch('/api/consent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ value }),
+      credentials: 'same-origin',
+      keepalive: true,
+    }).catch(() => {
+      // Nothing further is recorded either way — the client gate already holds.
+    })
   }
 }
 

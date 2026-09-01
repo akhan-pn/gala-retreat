@@ -1,0 +1,20 @@
+/*
+  The carousel supplies its own arrows, a counter and a progress rail, so the
+  native bar is redundant chrome over the photography. Everything it does is
+  reachable another way: the track is focusable and takes arrow keys, and it
+  still scrolls by wheel, trackpad and touch.
+*/
+.track {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    scroll-behavior: auto;
+  }
+}

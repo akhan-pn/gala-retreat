@@ -1,12 +1,21 @@
 import Link from 'next/link'
 import Carousel from '@/components/Carousel'
+import DepthStrip from '@/components/DepthStrip'
+import FaqAccordion from '@/components/FaqAccordion'
 import Parallax from '@/components/Parallax'
 import Reveal from '@/components/Reveal'
+import RevealDepth from '@/components/RevealDepth'
 import SmartImage from '@/components/SmartImage'
 import SpacesIndex from '@/components/SpacesIndex'
+import TiltCard from '@/components/TiltCard'
 import { site } from '@/config/site'
-import { heroSlides } from '@/content/gallery'
+import { heroSlides, type Photo } from '@/content/gallery'
+import { packageInclusions, planningSteps } from '@/content/home-sections'
+import { moments, occasions } from '@/content/occasions'
 import { seasonal } from '@/content/seasonal'
+
+/** The moments strip reuses the gallery's Photo shape. */
+const momentPhotos: Photo[] = moments.map((m) => ({ ...m, space: 'events' }))
 
 export default function Home() {
   return (
@@ -79,14 +88,109 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Occasions ────────────────────────────────────────────────
+          Six cards on a 3D tilt. Deliberately uneven: the second row is
+          pushed right so the grid never reads as a feature-card row. */}
+      <section className="pb-[clamp(5rem,12vw,10rem)]">
+        <div className="u-grid mb-14">
+          <Reveal className="col-span-12 lg:col-span-6 lg:col-start-3">
+            <p className="u-label text-accent">02 — What people hold here</p>
+            <h2 className="u-display-sm mt-6 text-[clamp(1.5rem,2.8vw,2.1rem)] text-ink">
+              One address for the whole occasion, from the haldi to the
+              farewell breakfast.
+            </h2>
+          </Reveal>
+        </div>
+
+        <div className="u-grid gap-y-[clamp(1.5rem,3vw,2.5rem)]">
+          {occasions.map((o, i) => (
+            <RevealDepth
+              key={o.id}
+              delay={(i % 3) * 90}
+              className={`col-span-12 sm:col-span-6 lg:col-span-4 ${
+                i >= 3 ? 'lg:col-start-auto' : ''
+              }`}
+            >
+              <div className={i >= 3 ? 'lg:mt-12' : ''}>
+                <TiltCard glare max={5}>
+                  <article className="group relative overflow-hidden">
+                    <SmartImage
+                      src={o.image}
+                      alt={o.alt}
+                      width={o.width}
+                      height={o.height}
+                      placeholder={o.placeholder}
+                      sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 31vw"
+                      className="aspect-[4/3] w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]"
+                    />
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute inset-0 bg-gradient-to-t from-nightfall/85 via-nightfall/20 to-transparent"
+                    />
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 p-5">
+                      <h3 className="u-display-sm text-[1.35rem] text-ivory">{o.name}</h3>
+                      <p className="mt-2 text-[0.85rem] leading-relaxed text-ivory/80">
+                        {o.blurb}
+                      </p>
+                    </div>
+                  </article>
+                </TiltCard>
+              </div>
+            </RevealDepth>
+          ))}
+        </div>
+      </section>
+
       {/* ── Spaces ───────────────────────────────────────────────────── */}
       <section className="pb-[clamp(5rem,12vw,10rem)]">
         <div className="u-grid mb-16">
           <Reveal className="col-span-12 lg:col-span-6 lg:col-start-3">
-            <p className="u-label text-accent">02 — The spaces</p>
+            <p className="u-label text-accent">03 — The spaces</p>
           </Reveal>
         </div>
         <SpacesIndex />
+      </section>
+
+      {/* ── The package ──────────────────────────────────────────────
+          The commercial heart of the page. Set on the secondary surface so
+          it reads as a distinct plate without another full-bleed photo. */}
+      <section className="border-y border-ink/10 bg-surface-2 py-[clamp(4.5rem,10vw,8rem)]">
+        <div className="u-grid gap-y-14">
+          <Reveal className="col-span-12 lg:col-span-4">
+            <p className="u-label text-accent">04 — What it costs</p>
+            <h2 className="u-display mt-7 text-[clamp(1.9rem,4vw,3rem)] text-ink">
+              One number, not a list of extras.
+            </h2>
+            <p className="u-label mt-10 text-ink/60">Complete package from</p>
+            <p className="u-numeral mt-3 text-[clamp(2.6rem,6vw,4.2rem)] text-accent">
+              ₹2,99,999
+            </p>
+            <Link
+              href="/enquiry"
+              className="u-label mt-10 inline-block border border-accent px-8 py-4 text-accent transition-colors duration-500 hover:bg-accent hover:text-on-accent"
+            >
+              Ask what your date costs
+            </Link>
+          </Reveal>
+
+          <div className="col-span-12 lg:col-span-7 lg:col-start-6">
+            <ul className="grid gap-x-10 sm:grid-cols-2">
+              {packageInclusions.map((item, i) => (
+                <Reveal as="li" key={item.n} delay={(i % 2) * 80}>
+                  <div className="border-t border-ink/12 py-7">
+                    <span className="u-label tabular-nums text-accent">{item.n}</span>
+                    <h3 className="u-display-sm mt-3 text-[1.15rem] text-ink">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2.5 text-[0.9rem] leading-relaxed text-ink/72">
+                      {item.detail}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
+            </ul>
+          </div>
+        </div>
       </section>
 
       {/* ── Full-bleed pull quote, with parallax ─────────────────────── */}
@@ -117,6 +221,31 @@ export default function Home() {
             </Reveal>
           </div>
         </div>
+      </section>
+
+      {/* ── Moments ──────────────────────────────────────────────────
+          A depth carousel rather than a grid: it reads as a reel of the
+          venue in use, and pulls people toward the full gallery. */}
+      <section className="py-[clamp(5rem,12vw,9rem)]">
+        <div className="u-grid mb-12">
+          <Reveal className="col-span-12 lg:col-span-5 lg:col-start-2">
+            <p className="u-label text-accent">05 — Moments</p>
+            <h2 className="u-display mt-7 text-[clamp(1.9rem,4vw,3rem)] text-ink">
+              Evenings that already happened here.
+            </h2>
+          </Reveal>
+          <Reveal delay={140} className="col-span-12 lg:col-span-3 lg:col-start-9 lg:pt-20">
+            <p className="text-ink/72">
+              Drag, scroll or use the arrow keys. Every frame opens in the
+              gallery.
+            </p>
+            <Link href="/gallery" className="u-link u-label mt-6 inline-block text-accent">
+              See the full gallery →
+            </Link>
+          </Reveal>
+        </div>
+
+        <DepthStrip photos={momentPhotos} showLabels={false} />
       </section>
 
       {/* ── Seasonal banner slot ─────────────────────────────────────── */}
@@ -152,11 +281,68 @@ export default function Home() {
         </section>
       )}
 
+      {/* ── Planning ─────────────────────────────────────────────────
+          Three steps, set as oversized numerals so the section reads as
+          typography rather than a process diagram. */}
+      <section className="pt-[clamp(5rem,12vw,9rem)]">
+        <div className="u-grid mb-14">
+          <Reveal className="col-span-12 lg:col-span-6 lg:col-start-2">
+            <p className="u-label text-accent">06 — How booking works</p>
+            <h2 className="u-display mt-7 text-[clamp(1.9rem,4vw,3rem)] text-ink">
+              Three steps, and none of them commit you.
+            </h2>
+          </Reveal>
+        </div>
+
+        <div className="u-grid gap-y-12">
+          {planningSteps.map((step, i) => (
+            <RevealDepth
+              key={step.n}
+              delay={i * 110}
+              className="col-span-12 lg:col-span-3"
+
+            >
+              <div className={i === 0 ? 'lg:ml-[8.333%]' : ''}>
+                <span className="u-numeral block text-[clamp(2.8rem,5vw,4rem)] text-accent/35">
+                  {step.n}
+                </span>
+                <h3 className="u-display-sm mt-6 text-[1.3rem] text-ink">{step.title}</h3>
+                <p className="mt-3 text-[0.95rem] leading-relaxed text-ink/72">
+                  {step.detail}
+                </p>
+              </div>
+            </RevealDepth>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Questions ────────────────────────────────────────────────
+          The things people actually ring up to ask, answered before they
+          have to. Set as an accordion so the section stays short. */}
+      <section className="py-[clamp(5rem,12vw,9rem)]">
+        <div className="u-grid gap-y-10">
+          <Reveal className="col-span-12 lg:col-span-4 lg:col-start-2">
+            <p className="u-label text-accent">07 — Questions</p>
+            <h2 className="u-display mt-7 text-[clamp(1.9rem,4vw,3rem)] text-ink">
+              Before you ring us.
+            </h2>
+            <p className="u-measure mt-7 text-ink/72">
+              If yours is not here, WhatsApp us — you will get a straight
+              answer, not a brochure.
+            </p>
+          </Reveal>
+
+          <Reveal delay={140} className="col-span-12 lg:col-span-6 lg:col-start-7">
+            <FaqAccordion />
+          </Reveal>
+        </div>
+      </section>
+
       {/* ── Closing CTA ──────────────────────────────────────────────── */}
       <section className="py-[clamp(5rem,12vw,10rem)]">
         <div className="u-grid">
           <Reveal className="col-span-12 lg:col-span-8 lg:col-start-3">
-            <p className="u-label text-accent">03 — Next step</p>
+            <p className="u-label text-accent">08 — Next step</p>
             <h2 className="u-display mt-8 text-[clamp(2.2rem,5.5vw,4.2rem)] text-ink">
               Tell us the date. We will tell you what is free.
             </h2>

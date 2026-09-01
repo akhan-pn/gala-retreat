@@ -9,12 +9,18 @@
 import { readFileSync } from 'node:fs'
 
 const warnOnly = process.argv.includes('--warn')
-const manifest = new URL('../src/content/gallery.ts', import.meta.url)
-const source = readFileSync(manifest, 'utf8')
+// Every manifest that can carry stand-in photography. Add new ones here.
+const manifests = [
+  '../src/content/gallery.ts',
+  '../src/content/occasions.ts',
+]
 
-const stale = [...source.matchAll(/src:\s*'([^']+)'[^}]*?placeholder:\s*true/gs)].map(
-  (m) => m[1],
-)
+const stale = manifests.flatMap((rel) => {
+  const source = readFileSync(new URL(rel, import.meta.url), 'utf8')
+  return [
+    ...source.matchAll(/(?:src|image):\s*'([^']+)'[^}]*?placeholder:\s*true/gs),
+  ].map((m) => m[1])
+})
 
 if (stale.length === 0) {
   console.log('✓ All imagery is real venue photography.')

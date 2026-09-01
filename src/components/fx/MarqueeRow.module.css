@@ -1,0 +1,68 @@
+/*
+  Marquee mechanics.
+
+  The item set is rendered twice in the markup — no cloneNode, no state, no
+  effect — and the track is translated by exactly half its width plus half a
+  gap, which lands copy two precisely where copy one started. At that point the
+  animation restarts and nothing has visibly moved.
+*/
+.root {
+  overflow: hidden;
+}
+
+.masked {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 7%,
+    #000 93%,
+    transparent
+  );
+  mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  gap: var(--marquee-gap, 2rem);
+  animation: marquee-drift var(--marquee-duration, 60s) linear infinite
+    var(--marquee-direction, normal);
+}
+
+@keyframes marquee-drift {
+  to {
+    transform: translate3d(calc(-50% - (var(--marquee-gap, 2rem) / 2)), 0, 0);
+  }
+}
+
+.paused:hover .track,
+.paused:focus-within .track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    /* Not a slower marquee — no marquee. Killing the shorthand also defeats
+       the global `animation-duration: 0.01ms !important` reset, which would
+       otherwise race the track to its end frame. */
+    animation: none;
+    transform: none;
+  }
+
+  /* Standing still, the second half of the row is off-screen for good, so the
+     row becomes something the visitor can pan through instead. */
+  .root {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+
+  .masked {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  /* One set is the whole row when it is not moving. */
+  .echo {
+    display: none;
+  }
+}

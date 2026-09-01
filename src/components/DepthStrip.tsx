@@ -7,6 +7,8 @@ import SmartImage from './SmartImage'
 type Props = {
   photos: Photo[]
   className?: string
+  /** Off when the strip mixes spaces and the caption would just read “Events”. */
+  showLabels?: boolean
 }
 
 const LABELS: Record<Photo['space'], string> = {
@@ -32,7 +34,11 @@ const MAX_DEPTH = 150
  * The 3D is applied by script only, so reduced motion and a failed hydration
  * both land on a plain horizontal scroller rather than a broken one.
  */
-export default function DepthStrip({ photos, className = '' }: Props) {
+export default function DepthStrip({
+  photos,
+  className = '',
+  showLabels = true,
+}: Props) {
   const scroller = useRef<HTMLDivElement>(null)
   const frame = useRef(0)
 
@@ -169,7 +175,11 @@ export default function DepthStrip({ photos, className = '' }: Props) {
         className="flex list-none items-center gap-[clamp(1rem,2.4vw,2.25rem)] py-10"
         style={{
           transformStyle: 'preserve-3d',
-          paddingInline: `calc(50% - ${HALF})`,
+          // Lead from the page gutter so the row starts on the editorial grid
+          // rather than leaving a dead half-screen of space at rest. The
+          // trailing pad still lets the final plate reach the centre.
+          paddingLeft: 'clamp(1.25rem, 5vw, 6rem)',
+          paddingRight: `calc(50% - ${HALF})`,
         }}
       >
         {photos.map((photo) => (
@@ -203,7 +213,9 @@ export default function DepthStrip({ photos, className = '' }: Props) {
               />
             </button>
 
-            <p className="u-label mt-4 text-center text-ink/60">{LABELS[photo.space]}</p>
+            {showLabels && (
+              <p className="u-label mt-4 text-center text-ink/60">{LABELS[photo.space]}</p>
+            )}
           </li>
         ))}
       </ul>
