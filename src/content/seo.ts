@@ -152,6 +152,7 @@ export const keywordClusters: {
       'function halls in Hyderabad',
       'banquet hall Hyderabad',
       'marriage hall Hyderabad',
+      'kalyana mantapam Hyderabad',
       'kalyana mandapam Hyderabad',
       'wedding halls in Hyderabad',
     ],
@@ -187,6 +188,10 @@ export const keywordClusters: {
     cluster: 'Locality — south-east Hyderabad',
     intent: 'local',
     terms: [
+      // mandap.com and venuebookingz both run dedicated Ibrahimpatnam venue
+      // pages, and weddingz runs a Hayathnagar one. No competing venue site
+      // targets either — these are proven categories, not guesses.
+      'wedding venues in Ibrahimpatnam',
       'function halls Nagarjuna Sagar Road',
       'convention hall LB Nagar',
       'function hall Hayathnagar',
@@ -207,6 +212,7 @@ export const keywordClusters: {
       'reception hall Hyderabad',
       'engagement venue Hyderabad',
       'haldi and mehendi venue Hyderabad',
+      'tilak and sagan venue Hyderabad',
       'birthday party hall Hyderabad',
       'corporate offsite venue Hyderabad',
       'conference hall Hyderabad',
@@ -222,6 +228,7 @@ export const keywordClusters: {
       'convention hall cost Hyderabad',
       'all inclusive wedding package Hyderabad',
       'wedding package Hyderabad 3 lakhs',
+      'convention hall vs banquet hall Hyderabad cost',
       'banquet hall booking Hyderabad',
       'convention hall rent per day Hyderabad',
       'resort wedding near Hyderabad price',
@@ -299,6 +306,10 @@ export const faqTargets: { question: string; why: string }[] = [
   {
     question: 'Do you host corporate offsites and conferences?',
     why: 'An LED wall, rigged sound and 11 acres is a conference product as much as a wedding one, and Adibatla, Pocharam and Uppal put large employers on this side of the ORR. Weekday demand against weekend demand.',
+  },
+  {
+    question: 'Is a resort or a function hall better value for 600 guests?',
+    why: 'The comparison query the buyer actually types, and the one asset in the whole competitive audit aimed at a real decision rather than a category label — Brown Town Resort ranks with "Wedding Resort vs Banquet Hall in Hyderabad | What Costs More in 2026?". The honest answer here is strong: a nearby Ibrahimpatnam hall lists at ₹1,00,000 a day for the same 600 capacity, and that buys a hall and nothing else.',
   },
   {
     question: 'How far ahead should we book for the wedding season?',

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Carousel from '@/components/Carousel'
-import DepthStrip from '@/components/DepthStrip'
 import FaqAccordion from '@/components/FaqAccordion'
+import MomentsCarousel from '@/components/fx/MomentsCarousel'
 import Parallax from '@/components/Parallax'
 import Reveal from '@/components/Reveal'
 import RevealDepth from '@/components/RevealDepth'
@@ -9,13 +9,33 @@ import SmartImage from '@/components/SmartImage'
 import SpacesIndex from '@/components/SpacesIndex'
 import TiltCard from '@/components/TiltCard'
 import { site } from '@/config/site'
-import { heroSlides, type Photo } from '@/content/gallery'
+import { heroSlides } from '@/content/gallery'
 import { packageInclusions, planningSteps } from '@/content/home-sections'
 import { moments, occasions } from '@/content/occasions'
 import { seasonal } from '@/content/seasonal'
 
-/** The moments strip reuses the gallery's Photo shape. */
-const momentPhotos: Photo[] = moments.map((m) => ({ ...m, space: 'events' }))
+/**
+ * Titles for the moments rail. Kept here rather than in the content file so the
+ * captions stay tied to this section's editing, not to the image manifest.
+ * Order matches `moments`.
+ */
+const MOMENT_CAPTIONS = [
+  { eyebrow: 'Before the day', title: 'Mehndi and bangles' },
+  { eyebrow: 'The lawn', title: 'Candlelight down the table' },
+  { eyebrow: 'Arrival', title: 'Through the flower arch' },
+  { eyebrow: 'Convention hall', title: 'The long table' },
+  { eyebrow: 'The lawn', title: 'Dinner under the trees' },
+  { eyebrow: 'The reception', title: 'The first dance' },
+  { eyebrow: 'Tradition', title: 'The threshold ritual' },
+  { eyebrow: 'Convention hall', title: 'Set for dinner' },
+]
+
+const momentCards = moments.map((m, i) => ({
+  photo: { ...m, space: 'events' as const },
+  eyebrow: MOMENT_CAPTIONS[i]?.eyebrow,
+  title: MOMENT_CAPTIONS[i]?.title ?? 'At Gala Retreat',
+  href: '/gallery',
+}))
 
 export default function Home() {
   return (
@@ -245,7 +265,10 @@ export default function Home() {
           </Reveal>
         </div>
 
-        <DepthStrip photos={momentPhotos} showLabels={false} />
+        <MomentsCarousel
+          moments={momentCards}
+          label="Moments at Gala Retreat"
+        />
       </section>
 
       {/* ── Seasonal banner slot ─────────────────────────────────────── */}
